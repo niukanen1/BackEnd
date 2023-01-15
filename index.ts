@@ -6,14 +6,21 @@ import { Authenticate, GenerateToken } from './Helpers/Token/TokenService';
 import { ResponseObject } from './Helpers/Response/Response';
 import cookieParser from 'cookie-parser';
 import { protectedRouter } from './routes/Protected/protectedRoute';
+import cors from 'cors';
 dotenv.config()
 
 const app = express(); 
+const corsOptions ={
+    origin:'*', 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200,
+ }
 
 
 app.use(express.json());
 app.use(express.urlencoded())
 app.use(cookieParser())
+app.use(cors(corsOptions));
 app.use(Authenticate);
 app.use("/protected", protectedRouter);
 
