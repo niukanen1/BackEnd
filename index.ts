@@ -66,6 +66,9 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", async (req: TypedRequest<User>, res) => {
 	const user = req.body;
+    console.log(req.body);
+    console.log(req.header);
+    console.log(req.headers);
 
 	try {
 		const userCheck = await LoginUser(user);
