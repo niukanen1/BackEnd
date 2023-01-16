@@ -64,7 +64,7 @@ app.post("/register", async (req, res) => {
 		.json(new ResponseObject("Successfully registered", true));
 });
 
-app.post("/login", async (req: TypedRequest<User>, res) => {
+app.post("/login", async (req, res) => {
 	const user = req.body;
     console.log(req.body);
     console.log(req.header);
