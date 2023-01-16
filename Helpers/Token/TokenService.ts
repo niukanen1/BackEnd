@@ -18,6 +18,7 @@ export async function Authenticate(req: Request, res: Response, next: NextFuncti
     console.log(req.body);
     console.log(req.header);
     console.log(req.headers);
+    
     const {accessToken: token} = req.cookies; 
     console.log(req.cookies);
 
