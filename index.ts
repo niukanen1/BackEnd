@@ -28,6 +28,7 @@ export interface TypedRequest<T> extends Express.Request {
 
 app.post("/register", async (req: TypedRequest<User>, res) => {
 	const user = req.body;
+    console.log("user: " + user);
 
 	const token = GenerateToken(user, "15m");
 	const userAddingToDbCheck = await AddUserToDb(user);
