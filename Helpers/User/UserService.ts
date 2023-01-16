@@ -2,7 +2,6 @@ import { ObjectId } from "mongodb"
 import { usersCollection } from "../../databaseConnector"
 import { ResponseObject } from "../Response/Response"
 import bcrypt from "bcrypt"
-import { NextFunction } from "express";
 
 
 const SALT_ROUNDS = 10;

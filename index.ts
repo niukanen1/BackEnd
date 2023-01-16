@@ -9,6 +9,8 @@ import { protectedRouter } from "./routes/Protected/protectedRoute";
 import cors from "cors";
 dotenv.config();
 
+const PORT = process.env.PORT || 4000;
+
 const app = express();
 const corsOptions = {
 	origin: true,
@@ -26,9 +28,12 @@ export interface TypedRequest<T> extends Express.Request {
 	body: T;
 }
 
-app.post("/register", async (req: TypedRequest<User>, res) => {
+app.post("/register", async (req, res) => {
 	const user = req.body;
-    console.log("user: " + user);
+    console.log(req.body);
+    // console.log(req);
+    console.log("user: ");
+    console.log(user);
 
 	const token = GenerateToken(user, "15m");
 	const userAddingToDbCheck = await AddUserToDb(user);
@@ -59,7 +64,7 @@ app.post("/login", async (req: TypedRequest<User>, res) => {
 
 	return res
 		.status(200)
-		.cookie("accessToken", token, { httpOnly: true, secure: false})
+		.cookie("accessToken", token, { httpOnly: true, secure: false, domain: "*.app"})
 		.json(new ResponseObject("Successfully logged in", true));
 });
 
@@ -67,6 +72,6 @@ app.get("/protected/someData", Authenticate, async (req, res) => {
 	return res.status(200).json(new ResponseObject("Success", true, { array: ["1", "2", "3"] }));
 });
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
 	console.log("Started server");
 });
