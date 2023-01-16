@@ -42,7 +42,7 @@ app.post("/register", async (req, res) => {
 	}
 	return res
 		.status(200)
-		.cookie("accessToken", token, { httpOnly: true, secure: false, sameSite: 'strict' })
+		.cookie("accessToken", token, { httpOnly: true, secure: false, sameSite: 'none' })
 		.json(new ResponseObject("Successfully registered", true));
 });
 
@@ -63,7 +63,7 @@ app.post("/login", async (req: TypedRequest<User>, res) => {
     console.log("Generated token : " + token);
 	return res
 		.status(200)
-		.cookie("accessToken", token, { httpOnly: true, secure: false, sameSite: 'strict'})
+		.cookie("accessToken", token, { httpOnly: true, secure: false, sameSite: 'none'})
 		.json(new ResponseObject("Successfully logged in", true));
 });
 
