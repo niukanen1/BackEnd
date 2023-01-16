@@ -24,6 +24,7 @@ app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(Authenticate);
 app.use("/protected", protectedRouter);
+app.set('trust proxy', 1) // trust first proxy
 
 app.use(function(req, res, next) {  
     res.header('Access-Control-Allow-Origin', req.headers.origin);
@@ -39,6 +40,7 @@ export function SerializeToken(token: string) {
     return serialize('accessToken', token, {
         httpOnly: true, 
         secure: false, 
+        sameSite: "none",
     })
 }
 
