@@ -15,6 +15,9 @@ export function GenerateToken( user: User, expiration: string | number = '1m' ) 
 export async function Authenticate(req: Request, res: Response, next: NextFunction) { 
     if (!req.path.includes("/protected")) return next(); 
     console.log("AUTH");
+    console.log(req.body);
+    console.log(req.header);
+    console.log(req.headers);
     const {accessToken: token} = req.cookies; 
     console.log(req.cookies);
 
