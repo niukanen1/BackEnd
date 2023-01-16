@@ -61,10 +61,9 @@ app.post("/login", async (req: TypedRequest<User>, res) => {
 	const token = GenerateToken(user, "15m");
 
     console.log("Generated token : " + token);
-
 	return res
 		.status(200)
-		.cookie("accessToken", token, { httpOnly: true, secure: false})
+		.cookie("accessToken", token, { httpOnly: true, secure: false, sameSite: 'strict'})
 		.json(new ResponseObject("Successfully logged in", true));
 });
 
