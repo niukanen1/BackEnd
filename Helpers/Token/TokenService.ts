@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../User/UserService";
 import { NextFunction, Request, Response } from "express";
 import { ResponseObject } from "../Response/Response";
-import { TypedRequest } from "../..";
+import { SerializeToken, TypedRequest } from "../..";
 import { usersCollection } from "../../databaseConnector";
 
 const SECRET_KEY = process.env.SECRET_KEY ?? "another_Secret_dont_tell_anybody_pls";
@@ -28,7 +28,11 @@ export async function Authenticate(req: Request, res: Response, next: NextFuncti
         const decoded = jwt.verify(token, SECRET_KEY) as User;
         const fullUser = await usersCollection.findOne({email: decoded.email});
         req.body.user = fullUser; 
-        res.status(200).cookie("accessToken", GenerateToken({ email: decoded.email, password: decoded.password}, '15m'), {httpOnly: true, secure: false, sameSite: 'none'});
+        res.setHeader('Set-Cookie', SerializeToken(GenerateToken({ email: decoded.email, password: decoded.password}, '15m')));
+        res.status(200)
+        // .cookie("accessToken", GenerateToken({ email: decoded.email, password: decoded.password}, '15m'), {httpOnly: true, secure: false, sameSite: 'none'});
+        
+        
         // jwt.verify(token, SECRET_KEY, (err: any, user: any) => { 
         //     if (err != undefined) { 
         //         console.log("error")

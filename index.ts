@@ -7,6 +7,7 @@ import { ResponseObject } from "./Helpers/Response/Response";
 import cookieParser from "cookie-parser";
 import { protectedRouter } from "./routes/Protected/protectedRoute";
 import cors from "cors";
+import { serialize } from "cookie"
 dotenv.config();
 
 const PORT = process.env.PORT || 4000;
@@ -28,6 +29,14 @@ export interface TypedRequest<T> extends Express.Request {
 	body: T;
 }
 
+export function SerializeToken(token: string) { 
+    return serialize('accessToken', token, {
+        httpOnly: true, 
+        secure: false, 
+    })
+}
+
+
 app.post("/register", async (req, res) => {
 	const user = req.body;
     console.log(req.body);
@@ -40,9 +49,11 @@ app.post("/register", async (req, res) => {
 	if (!userAddingToDbCheck.success) {
 		return res.status(400).json(userAddingToDbCheck);
 	}
+    
+    res.setHeader('Set-Cookie', SerializeToken(token));
 	return res
 		.status(200)
-		.cookie("accessToken", token, { httpOnly: true, secure: false, sameSite: 'none' })
+		// .cookie("accessToken", token, { httpOnly: true, secure: false, sameSite: 'none' })
 		.json(new ResponseObject("Successfully registered", true));
 });
 
@@ -61,9 +72,10 @@ app.post("/login", async (req: TypedRequest<User>, res) => {
 	const token = GenerateToken(user, "15m");
 
     console.log("Generated token : " + token);
+    res.setHeader('Set-Cookie', SerializeToken(token));
 	return res
 		.status(200)
-		.cookie("accessToken", token, { httpOnly: true, secure: false, sameSite: 'none'})
+		// .cookie("accessToken", token, { httpOnly: true, secure: false, sameSite: 'none'})
 		.json(new ResponseObject("Successfully logged in", true));
 });
 
