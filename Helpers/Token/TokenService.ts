@@ -28,7 +28,7 @@ export async function Authenticate(req: Request, res: Response, next: NextFuncti
         const decoded = jwt.verify(token, SECRET_KEY) as User;
         const fullUser = await usersCollection.findOne({email: decoded.email});
         req.body.user = fullUser; 
-        res.status(200).cookie("accessToken", GenerateToken({ email: decoded.email, password: decoded.password}, '15m'), {httpOnly: true, secure: false});
+        res.status(200).cookie("accessToken", GenerateToken({ email: decoded.email, password: decoded.password}, '15m'), {httpOnly: true, secure: false, sameSite: 'strict'});
         // jwt.verify(token, SECRET_KEY, (err: any, user: any) => { 
         //     if (err != undefined) { 
         //         console.log("error")

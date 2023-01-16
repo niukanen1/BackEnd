@@ -42,7 +42,7 @@ app.post("/register", async (req, res) => {
 	}
 	return res
 		.status(200)
-		.cookie("accessToken", token, { httpOnly: true, secure: false })
+		.cookie("accessToken", token, { httpOnly: true, secure: false, sameSite: 'strict' })
 		.json(new ResponseObject("Successfully registered", true));
 });
 
