@@ -46,7 +46,8 @@ export function SerializeToken(token: string) {
 app.post("/register", async (req, res) => {
 	const user = req.body;
     console.log(req.body);
-    // console.log(req);
+    console.log(req.header);
+    console.log(req.headers);
     console.log("user: ");
     console.log(user);
 
