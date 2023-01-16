@@ -39,7 +39,7 @@ export interface TypedRequest<T> extends Express.Request {
 export function SerializeToken(token: string) { 
     return serialize('accessToken', token, {
         httpOnly: true, 
-        secure: false, 
+        secure: true, 
         sameSite: "none",
         domain: "ababa-tech-test-task.vercel.app"
     })
