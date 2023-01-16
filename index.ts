@@ -11,7 +11,7 @@ dotenv.config();
 
 const app = express();
 const corsOptions = {
-	origin: "https://ababa-tech-test-task-ng6wk0j01-niukanen1.vercel.app",
+	origin: true,
 	credentials: true,
 };
 
