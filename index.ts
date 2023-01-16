@@ -25,6 +25,12 @@ app.use(cors(corsOptions));
 app.use(Authenticate);
 app.use("/protected", protectedRouter);
 
+app.use(function(req, res, next) {  
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 export interface TypedRequest<T> extends Express.Request {
 	body: T;
 }
