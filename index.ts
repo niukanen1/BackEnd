@@ -64,7 +64,7 @@ app.post("/login", async (req: TypedRequest<User>, res) => {
 
 	return res
 		.status(200)
-		.cookie("accessToken", token, { httpOnly: true, secure: false, domain: "*.app"})
+		.cookie("accessToken", token, { httpOnly: true, secure: false})
 		.json(new ResponseObject("Successfully logged in", true));
 });
 
