@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 4000;
 
 const app = express();
 const corsOptions = {
-	origin: true,
+	origin: "https://ababa-tech-test-task.vercel.app",
 	credentials: true,
 };
 
