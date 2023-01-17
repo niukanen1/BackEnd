@@ -41,7 +41,6 @@ export function SerializeToken(token: string) {
         httpOnly: true, 
         secure: true, 
         sameSite: "none",
-        domain: "ababa-tech-test-task.vercel.app"
     })
 }
 
