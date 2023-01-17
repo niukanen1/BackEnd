@@ -16,7 +16,6 @@ const app = express();
 const corsOptions = {
 	origin: "https://ababa-tech-test-task.vercel.app",
 	credentials: true,
-    exposedHeaders: ["Set-Cookie"]
 };
 
 app.use(express.json());
@@ -28,7 +27,7 @@ app.use("/protected", protectedRouter);
 
 app.use(function(req, res, next) {  
     res.header('Access-Control-Allow-Origin', req.headers.origin);
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Set-Cookie");
     next();
 });
 
