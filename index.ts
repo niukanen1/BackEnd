@@ -16,6 +16,7 @@ const app = express();
 const corsOptions = {
 	origin: "https://ababa-tech-test-task.vercel.app",
 	credentials: true,
+    exposedHeaders: ["Set-Cookie"]
 };
 
 app.use(express.json());
@@ -37,7 +38,7 @@ export interface TypedRequest<T> extends Express.Request {
 
 export function SerializeToken(token: string) { 
     return serialize('accessToken', token, {
-        httpOnly: false, 
+        httpOnly: true, 
         secure: true, 
         sameSite: "none",
     })
