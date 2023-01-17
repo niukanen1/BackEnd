@@ -1,20 +1,18 @@
-import { usersCollection } from "./databaseConnector";
-import { AddUserToDb, LoginUser, User } from "./Helpers/User/UserService";
+import { AddUserToDb, LoginUser } from "./Helpers/User/UserService";
 import express from "express";
 import dotenv from "dotenv";
-import { Authenticate, GenerateToken } from "./Helpers/Token/TokenService";
+import { Authenticate, GenerateToken, SerializeToken } from "./Helpers/Token/TokenService";
 import { ResponseObject } from "./Helpers/Response/Response";
 import cookieParser from "cookie-parser";
 import { protectedRouter } from "./routes/Protected/protectedRoute";
 import cors from "cors";
-import { serialize } from "cookie"
 dotenv.config();
 
 const PORT = process.env.PORT || 4000;
 
 const app = express();
 const corsOptions = {
-	origin: "https://ababa-tech-test-task.vercel.app",
+	origin: true,
 	credentials: true,
 };
 
@@ -35,23 +33,11 @@ export interface TypedRequest<T> extends Express.Request {
 	body: T;
 }
 
-export function SerializeToken(token: string) { 
-    return serialize('accessToken', token, {
-        httpOnly: true, 
-        secure: true, 
-        sameSite: "none",
-        domain: "https://ababa-tech-test-task.vercel.app"
-    })
-}
+
 
 
 app.post("/register", async (req, res) => {
 	const user = req.body;
-    console.log(req.body);
-    console.log(req.header);
-    console.log(req.headers);
-    console.log("user: ");
-    console.log(user);
 
 	const token = GenerateToken(user, "15m");
 	const userAddingToDbCheck = await AddUserToDb(user);
@@ -62,15 +48,11 @@ app.post("/register", async (req, res) => {
     res.setHeader('Set-Cookie', SerializeToken(token));
 	return res
 		.status(200)
-		// .cookie("accessToken", token, { httpOnly: true, secure: false, sameSite: 'none' })
 		.json(new ResponseObject("Successfully registered", true));
 });
 
 app.post("/login", async (req, res) => {
 	const user = req.body;
-    console.log(req.body);
-    console.log(req.header);
-    console.log(req.headers);
 
 	try {
 		const userCheck = await LoginUser(user);
@@ -83,17 +65,18 @@ app.post("/login", async (req, res) => {
 
 	const token = GenerateToken(user, "15m");
 
-    console.log("Generated token : " + token);
     res.setHeader('Set-Cookie', SerializeToken(token));
 	return res
 		.status(200)
-		// .cookie("accessToken", token, { httpOnly: true, secure: false, sameSite: 'none'})
 		.json(new ResponseObject("Successfully logged in", true));
 });
+app.post("/logout", async (req, res) => {
+    return res.clearCookie("accessToken").status(200).json(new ResponseObject("Successfully logged out", true)); 
+})
 
-app.get("/protected/someData", Authenticate, async (req, res) => {
-	return res.status(200).json(new ResponseObject("Success", true, { array: ["1", "2", "3"] }));
-});
+// app.get("/protected/someData", Authenticate, async (req, res) => {
+// 	return res.status(200).json(new ResponseObject("Success", true, { array: ["1", "2", "3"] }));
+// });
 
 app.listen(PORT, () => {
 	console.log("Started server");
