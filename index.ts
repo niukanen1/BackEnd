@@ -27,7 +27,7 @@ app.use("/protected", protectedRouter);
 
 app.use(function(req, res, next) {  
     res.header('Access-Control-Allow-Origin', req.headers.origin);
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Set-Cookie");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
 
@@ -40,6 +40,7 @@ export function SerializeToken(token: string) {
         httpOnly: true, 
         secure: true, 
         sameSite: "none",
+        domain: "https://ababa-tech-test-task.vercel.app"
     })
 }
 
