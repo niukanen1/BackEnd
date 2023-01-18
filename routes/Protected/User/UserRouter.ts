@@ -16,3 +16,14 @@ UserRouter.get("/getUserInfo", async (req, res) => {
         return res.status(500).json(new ResponseObject("Failed to get user data", false));
     }
 });
+
+UserRouter.post("/checkIfLoggedIn", async(req, res) => { 
+    const {user}: {user:User} = req.body;  
+    try { 
+        const dbUser = await usersCollection.findOne({email: user.email});
+        return res.json(new ResponseObject("You are logged in", true, dbUser as User));
+    } catch (err) { 
+        return res.json(new ResponseObject("Something went wrong", false));
+    }
+    
+})

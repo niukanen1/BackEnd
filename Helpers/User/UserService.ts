@@ -42,8 +42,6 @@ export async function LoginUser(userToLogin: User): Promise<ResponseObject> {
     if (!userFromDb) { 
         return new ResponseObject("User doesn't exists", false); 
     }
-    console.log("PASSTOLOGIN: " + userToLogin.password);
-    console.log("PASSTOCOMPARE: " + userFromDb.password);
     const passwordMatch = await ComparePassword(userToLogin.password, userFromDb.password); 
 
     if (!passwordMatch) { 

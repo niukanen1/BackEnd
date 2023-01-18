@@ -17,7 +17,7 @@ const corsOptions = {
 };
 
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(Authenticate);
@@ -39,7 +39,7 @@ export interface TypedRequest<T> extends Express.Request {
 app.post("/register", async (req, res) => {
 	const user = req.body;
 
-	const token = GenerateToken(user, "15m");
+	const token = GenerateToken(user);
 	const userAddingToDbCheck = await AddUserToDb(user);
 	if (!userAddingToDbCheck.success) {
 		return res.status(400).json(userAddingToDbCheck);
@@ -63,7 +63,7 @@ app.post("/login", async (req, res) => {
 		console.log(err);
 	}
 
-	const token = GenerateToken(user, "15m");
+	const token = GenerateToken(user);
 
     res.setHeader('Set-Cookie', SerializeToken(token));
 	return res
@@ -71,7 +71,12 @@ app.post("/login", async (req, res) => {
 		.json(new ResponseObject("Successfully logged in", true));
 });
 app.post("/logout", async (req, res) => {
-    return res.clearCookie("accessToken").status(200).json(new ResponseObject("Successfully logged out", true)); 
+
+    res.setHeader("Set-Cookie", SerializeToken("Haha! No token here, you'd better log in", -1));
+    res.clearCookie("accessToken", {path: "/protected/user"});
+    res.clearCookie("accessToken", {path: "/"});
+
+    return res.status(200).json(new ResponseObject("Successfully logged out", true)); 
 })
 
 // app.get("/protected/someData", Authenticate, async (req, res) => {
