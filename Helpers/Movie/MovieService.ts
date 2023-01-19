@@ -36,8 +36,7 @@ export async function deleteMovie(req:TypedRequest<{movieID: number} & {user: Us
     const {user} = req.body;
 
     const oldLength = user[movieType]?.length; 
-    user.favoriteMovies = user[movieType]?.filter(element => element != movieID); 
-
+    user[movieType] = user[movieType]?.filter(element => element != movieID); 
     try { 
         await usersCollection.updateOne({email: user.email}, {$set: user}); 
     } catch(err) { 
