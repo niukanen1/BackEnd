@@ -8,7 +8,6 @@ import { User } from "../../../Helpers/User/UserService";
 export const movieRouter = express.Router();
 
 movieRouter.post("/addFavoriteMovie", async (req: TypedRequest<{movieID: number} & {user: User}>, res) => { 
- 
     const response = await addMovie(req, MovieType.favorite); 
     if (!response.success) { 
         return res.status(400).json(response); 
