@@ -51,6 +51,20 @@ export async function LoginUser(userToLogin: User): Promise<ResponseObject> {
 }
 
 
+export function ResetPassword(existingUser: User, newPassword: string) {
+    const user = existingUser; 
+    HashPassword(newPassword, async (hashedPass) => { 
+        user.password = hashedPass;
+        try { 
+            await usersCollection.updateOne({email: user.email}, {$set: user});
+        } catch (err) { 
+            console.log((err as Error).message);
+        }
+       
+    });
+}
+
+
 export async function ComparePassword(password: string, hashedPassword: string): Promise<boolean> { 
     return await bcrypt.compare(password, hashedPassword); 
 }
@@ -63,3 +77,4 @@ export function HashPassword(password: string, completion: (hash: string) => voi
         completion(hash)
     })
 }   
+

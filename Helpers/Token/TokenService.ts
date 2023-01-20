@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { User } from "../User/UserService";
+import { ComparePassword, User } from "../User/UserService";
 import { NextFunction, Request, Response } from "express";
 import { ResponseObject } from "../Response/Response";
 import { usersCollection } from "../../databaseConnector";
@@ -25,6 +25,7 @@ export async function Authenticate(req: Request, res: Response, next: NextFuncti
 
 		const fullUser = await usersCollection.findOne({ email: decoded.email });
 		req.body.user = fullUser;
+
 		res.setHeader(
 			"Set-Cookie",
 			SerializeToken(GenerateToken({ email: decoded.email, password: decoded.password }))
